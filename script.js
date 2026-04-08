@@ -6,13 +6,14 @@ let totalWins = 0;
 const scores = []
 
 document.getElementById("playBtn").addEventListener("click", play);
+document.getElementbyId("guessBtn").addEventListener("click", makeGuess);
 
 function play(){
     let range = 0;
     let levels = document.getElementsByName("level");
     for(let i=0; i<levels.length; i++){
         if(levels[i].checked){
-            range = parseInt(levels[i])
+            range = parseInt(levels[i].value);
         }
         levels[i].disabled = true;
     }
