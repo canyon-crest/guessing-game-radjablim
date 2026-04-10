@@ -1,35 +1,144 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>JavaScript Number Guessing Game</title>
-    <script src="script.js" defer></script>
-  </head>
-  <body>
-    <p id="date"></p>
+<link rel="stylesheet" href="style.css" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number Quest — Guessing Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-    <h3>Level</h3>
-    <input type="radio" name="level" id="e" value="3" checked><label for="e">Easy</label>
-    <input type="radio" name="level" id="m" value="10"><label for="m">Medium</label>
-    <input type="radio" name="level" id="h" value="100"><label for="h">Hard</label>
+  <!-- ══════════════════════════════════════
+       HEADER BAR
+  ══════════════════════════════════════ -->
+  <header class="arcade-header">
+    <div class="header-left">
+      <span class="logo-text">NUMBER<span class="logo-accent">QUEST</span></span>
+    </div>
+    <div class="header-right">
+      <p id="date" class="date-display">Loading...</p>
+    </div>
+  </header>
 
-    <button id="playBtn">Play</button>
+  <!-- ══════════════════════════════════════
+       MAIN LAYOUT
+  ══════════════════════════════════════ -->
+  <main class="game-grid">
 
-    <h3 id="msg">Select a Level</h3>
-    <input type="text" id="guess">
-    <button id="guessBtn" disabled>Guess</button>
-    <button id="giveUpBtn" disabled>Give Up</button>
+    <!-- LEFT PANEL — GAME CONTROLS -->
+    <section class="panel panel-game">
+      <div class="panel-title">MISSION CONTROL</div>
 
-    <h3>Stats</h3>
-    <p id="wins">Total wins: 0</p>
-    <p id="avgScore">Average Score: </p>
-    <p id="fastest">Fastest Game: </p>
-    <p id="avgTime">Average Time: </p>
+      <!-- Difficulty -->
+      <div class="section-block">
+        <div class="section-label">SELECT DIFFICULTY</div>
+        <div class="radio-group">
+          <label class="radio-card" for="e">
+            <input type="radio" name="level" id="e" value="3" checked />
+            <span class="radio-face">
+              <span class="radio-tier">EASY</span>
+              <span class="radio-range">1 – 3</span>
+            </span>
+          </label>
+          <label class="radio-card" for="m">
+            <input type="radio" name="level" id="m" value="10" />
+            <span class="radio-face">
+              <span class="radio-tier">MEDIUM</span>
+              <span class="radio-range">1 – 10</span>
+            </span>
+          </label>
+          <label class="radio-card" for="h">
+            <input type="radio" name="level" id="h" value="100" />
+            <span class="radio-face">
+              <span class="radio-tier">HARD</span>
+              <span class="radio-range">1 – 100</span>
+            </span>
+          </label>
+        </div>
+      </div>
 
-    <h3>Leaderboard</h3>
-    <ol>
-      <li name="leaderboard">100</li>
-      <li name="leaderboard">100</li>
-      <li name="leaderboard">100</li>
-    </ol>
-  </body>
+      <!-- Play button -->
+      <div class="section-block">
+        <button id="playBtn" class="btn btn-play">▶ PLAY</button>
+      </div>
+
+      <!-- Guess input + button -->
+      <div class="section-block">
+        <div class="section-label">YOUR GUESS</div>
+        <div class="guess-row">
+          <input type="number" id="guess" class="guess-input" placeholder="?" min="1" disabled />
+          <button id="guessBtn" class="btn btn-guess" disabled>SUBMIT</button>
+        </div>
+      </div>
+
+      <!-- Give up -->
+      <div class="section-block">
+        <button id="giveUpBtn" class="btn btn-giveup" disabled>⚑ GIVE UP</button>
+      </div>
+
+      <!-- Message area -->
+      <div class="section-block">
+        <h3 id="msg" class="msg-area">Press PLAY to begin your quest!</h3>
+      </div>
+
+      <!-- Proximity meter -->
+      <div class="proximity-bar" id="proximityBar">
+        <div class="prox-label">PROXIMITY</div>
+        <div class="prox-track">
+          <div class="prox-fill" id="proxFill"></div>
+        </div>
+        <div class="prox-hint" id="proxHint">—</div>
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL — STATS -->
+    <section class="panel panel-stats">
+      <div class="panel-title">STATISTICS</div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">WINS</div>
+          <p id="wins" class="stat-value">0</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">AVG GUESSES</div>
+          <p id="avgScore" class="stat-value">—</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">FASTEST GAME</div>
+          <p id="fastest" class="stat-value">—</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">AVG TIME</div>
+          <p id="avgTime" class="stat-value">—</p>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="leaderboard-block">
+        <div class="panel-title lb-title">TOP SCORES</div>
+        <ol class="leaderboard-list">
+          <li name="leaderboard" class="lb-item">--</li>
+          <li name="leaderboard" class="lb-item">--</li>
+          <li name="leaderboard" class="lb-item">--</li>
+        </ol>
+        <div class="lb-caption">fewest guesses wins</div>
+      </div>
+
+      <!-- Win streak bonus display -->
+      <div class="streak-block" id="streakBlock">
+        <div class="streak-label">WIN STREAK</div>
+        <div class="streak-value" id="streakVal">0</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════
+       SCANLINE OVERLAY (purely decorative)
+  ══════════════════════════════════════ -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+</body>
 </html>
